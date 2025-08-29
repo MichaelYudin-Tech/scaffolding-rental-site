@@ -20,6 +20,9 @@ if (!siteSettings) {
     whatsapp: "972535227619"
   };
 }
+
+// Check if form was successfully submitted
+const isSuccess = Astro.url.searchParams.has('success');
 ---
 
 <BaseLayout title="צור קשר - השכרת פיגומים ניידים">
@@ -129,13 +132,10 @@ if (!siteSettings) {
           <form 
             name="contact" 
             method="POST" 
-            data-netlify="true" 
-            data-netlify-honeypot="bot-field"
+            netlify
+            netlify-honeypot="bot-field"
             class="space-y-6"
           >
-            <!-- Netlify form detection -->
-            <input type="hidden" name="form-name" value="contact" />
-            
             <!-- Honeypot field for spam protection -->
             <div class="hidden">
               <label>Don't fill this out if you're human: <input name="bot-field" /></label>
