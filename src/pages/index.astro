@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/button.astro';
 import Card from '../components/card.astro';
-import { sanityClient } from '../lib/sanity';
+import { sanityClient, urlFor } from '../lib/sanity';
 
 // Fetch content from Sanity (with fallback data)
 let homepage;
@@ -148,7 +148,7 @@ if (!homepage || !siteSettings) {
         <div class="relative">
           {homepage.heroImage ? (
             <img 
-              src={homepage.heroImage} 
+              src={urlFor(homepage.heroImage).width(800).height(400).url()} 
               alt="פיגומים ניידים" 
               class="w-full h-96 object-cover rounded-2xl shadow-2xl"
             />
@@ -227,7 +227,7 @@ if (!homepage || !siteSettings) {
         {homepage.partners?.map((partner: any) => (
           <div class="text-center p-6 bg-white rounded-xl hover:bg-blue-50 transition-colors shadow-sm hover:shadow-md border border-gray-100">
             {partner.logo ? (
-              <img src={partner.logo} alt={partner.name} class="h-16 w-auto mx-auto mb-4" />
+              <img src={urlFor(partner.logo).width(200).height(200).url()} alt={partner.name} class="h-16 w-auto mx-auto mb-4" />
             ) : (
               <div class="h-16 w-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">

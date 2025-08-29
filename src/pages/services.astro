@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/button.astro';
 import Card from '../components/card.astro';
-import { sanityClient } from '../lib/sanity';
+import { sanityClient, urlFor } from '../lib/sanity';
 
 // Fetch products from Sanity (with fallback data)
 let products;
@@ -98,7 +98,7 @@ if (!products || !siteSettings) {
             
             {product.image ? (
               <img 
-                src={product.image} 
+                src={urlFor(product.image).width(400).height(200).url()} 
                 alt={product.name} 
                 class="w-full h-48 object-cover mb-6 rounded-lg"
               />
