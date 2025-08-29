@@ -1,0 +1,232 @@
+---
+export interface Props {
+  type: 'organization' | 'service' | 'product' | 'breadcrumb';
+  data?: any;
+}
+
+const { type, data = {} } = Astro.props;
+
+const getOrganizationSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://pigumim.netlify.app/#organization",
+  "name": "השכרת פיגומים ניידים",
+  "alternateName": "פיגומים ניידים להשכרה",
+  "description": "השכרת פיגומים ניידים איכותיים ובטוחים לקבלנים, גננים ובעלי בתים פרטיים. שירות מקצועי 24/6 עם משלוח לכל הארץ.",
+  "url": "https://pigumim.netlify.app/",
+  "logo": "https://pigumim.netlify.app/favicon.svg",
+  "image": "https://pigumim.netlify.app/og-image.jpg",
+  "telephone": "+972-53-527-7619",
+  "priceRange": "$$",
+  "currenciesAccepted": "ILS",
+  "paymentAccepted": "Cash, Credit Card, Bank Transfer",
+  "openingHours": [
+    "Su-Th 06:00-22:00",
+    "Fr 06:00-14:00"
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+      "opens": "06:00",
+      "closes": "22:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification", 
+      "dayOfWeek": "Friday",
+      "opens": "06:00",
+      "closes": "14:00"
+    }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "IL",
+    "addressRegion": "Israel",
+    "addressLocality": "ישראל"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Israel"
+  },
+  "serviceArea": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": 31.7683,
+      "longitude": 35.2137
+    },
+    "geoRadius": "200000"
+  },
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "השכרת פיגומים ניידים",
+        "description": "השכרת פיגומים אלומיניום איכותיים לעבודות בגובה"
+      }
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "קטלוג פיגומים ניידים",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "פיגום אלומיניום סטנדרטי 6.3 מ",
+        "description": "פיגום אלומיניום איכותי מיצרן GIERRE SCALE איטליה, גובה דריכה 6.3 מ"
+      },
+      {
+        "@type": "OfferCatalog", 
+        "name": "פיגום סטנדרטי 4.6 מ",
+        "description": "פיגום איכותי לעבודות בגובה בינוני, גובה דריכה 4.6 מ"
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "פיגום מקצועי רוחב כפול",
+        "description": "פיגום אלומיניום מקצועי לעבודות כבדות, רוחב כפול 4 מ"
+      }
+    ]
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "יוסי כהן"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "שירות מעולה ופיגומים איכותיים. ממליץ בחום!"
+    },
+    {
+      "@type": "Review", 
+      "author": {
+        "@type": "Person",
+        "name": "שרה לוי"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5", 
+        "bestRating": "5"
+      },
+      "reviewBody": "זמינות מהירה ומחירים הוגנים. תודה רבה!"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "3",
+    "bestRating": "5"
+  },
+  "sameAs": [],
+  "keywords": "פיגומים ניידים, השכרת פיגומים, פיגום אלומיניום, עבודה בגובה, קבלנים, גננים, בטיחות"
+});
+
+const getServiceSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "השכרת פיגומים ניידים",
+  "description": "השכרת פיגומים ניידים איכותיים ובטוחים מהמותגים המובילים באירopa לקבלנים, גננים ובעלי בתים פרטיים",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "השכרת פיגומים ניידים",
+    "telephone": "+972-53-527-7619"
+  },
+  "areaServed": "Israel",
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "https://pigumim.netlify.app/",
+    "servicePhone": "+972-53-527-7619"
+  },
+  "category": "Construction Equipment Rental",
+  "termsOfService": "https://pigumim.netlify.app/",
+  "serviceType": "Equipment Rental"
+});
+
+const getProductSchema = (product: any) => ({
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.name,
+  "description": `${product.name} - ${product.manufacturer}. גובה דריכה: ${product.maxHeight}, גובה עבודה: ${product.workingHeight}, משקל מותר: ${product.maxWeight}`,
+  "brand": {
+    "@type": "Brand",
+    "name": product.manufacturer
+  },
+  "manufacturer": {
+    "@type": "Organization", 
+    "name": product.manufacturer
+  },
+  "category": "Construction Equipment",
+  "offers": {
+    "@type": "Offer",
+    "price": product.price === "לבירור" ? "0" : product.price,
+    "priceCurrency": "ILS",
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "השכרת פיגומים ניידים"
+    }
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "גובה דריכה",
+      "value": product.maxHeight
+    },
+    {
+      "@type": "PropertyValue", 
+      "name": "גובה עבודה",
+      "value": product.workingHeight
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "משקל מותר", 
+      "value": product.maxWeight
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "גודל במה",
+      "value": product.platformSize
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "תקן בטיחות",
+      "value": product.standard
+    }
+  ]
+});
+
+const getBreadcrumbSchema = (items: Array<{name: string, url: string}>) => ({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList", 
+  "itemListElement": items.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": item.url
+  }))
+});
+
+let schema: any = {};
+
+switch (type) {
+  case 'organization':
+    schema = getOrganizationSchema();
+    break;
+  case 'service':
+    schema = getServiceSchema();
+    break;
+  case 'product':
+    schema = getProductSchema(data);
+    break;
+  case 'breadcrumb':
+    schema = getBreadcrumbSchema(data);
+    break;
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)}></script>

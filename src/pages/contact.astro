@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/button.astro';
 import { sanityClient } from '../lib/sanity';
+import Schema from '../components/schema.astro';
 
 // Fetch site settings from Sanity
 let siteSettings;
@@ -22,6 +23,11 @@ if (!siteSettings) {
 ---
 
 <BaseLayout title="צור קשר - השכרת פיגומים ניידים">
+  <!-- Schema.org structured data -->
+  <Schema type="breadcrumb" data={[
+    {name: "עמוד הבית", url: "https://pigumim.netlify.app/"},
+    {name: "צור קשר", url: "https://pigumim.netlify.app/contact"}
+  ]} slot="head" />
   
   <!-- Header Section -->
   <section class="bg-gradient-to-br from-primary-50 via-white to-blue-50 py-16">

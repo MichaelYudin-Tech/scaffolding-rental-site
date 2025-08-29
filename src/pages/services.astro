@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/button.astro';
 import Card from '../components/card.astro';
 import { sanityClient, urlFor } from '../lib/sanity';
+import Schema from '../components/schema.astro';
 
 // Fetch products from Sanity (with fallback data)
 let products;
@@ -80,6 +81,15 @@ if (!products) {
 ---
 
 <BaseLayout title="שירותים - השכרת פיגומים ניידים">
+  <!-- Schema.org structured data -->
+  <Schema type="breadcrumb" data={[
+    {name: "עמוד הבית", url: "https://pigumim.netlify.app/"},
+    {name: "שירותים", url: "https://pigumim.netlify.app/services"}
+  ]} slot="head" />
+  
+  {products?.map((product: any) => (
+    <Schema type="product" data={product} slot="head" />
+  ))}
   
   <!-- Header Section -->
   <section class="bg-gradient-to-br from-primary-50 via-white to-blue-50 py-16">
