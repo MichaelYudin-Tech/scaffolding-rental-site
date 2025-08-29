@@ -141,3 +141,4 @@ temp/
 
 # Documentation and instruction files
 *.md
+!studio/**/*.md
