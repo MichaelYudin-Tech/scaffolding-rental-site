@@ -40,9 +40,11 @@ const getOrganizationSchema = () => ({
   ],
   "address": {
     "@type": "PostalAddress",
-    "addressCountry": "IL",
-    "addressRegion": "Israel",
-    "addressLocality": "ישראל"
+    "streetAddress": "נחל עין גדי 23",
+    "addressLocality": "בית שמש",
+    "postalCode": "9909857",
+    "addressRegion": "ירושלים",
+    "addressCountry": "IL"
   },
   "areaServed": {
     "@type": "Country",
@@ -52,10 +54,15 @@ const getOrganizationSchema = () => ({
     "@type": "GeoCircle",
     "geoMidpoint": {
       "@type": "GeoCoordinates",
-      "latitude": 31.7683,
-      "longitude": 35.2137
+      "latitude": 31.7539,
+      "longitude": 34.9896
     },
     "geoRadius": "200000"
+  },
+  "geo": {
+    "@type": "GeoCoordinates", 
+    "latitude": 31.7539,
+    "longitude": 34.9896
   },
   "makesOffer": [
     {
