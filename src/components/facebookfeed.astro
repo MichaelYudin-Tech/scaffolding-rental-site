@@ -1,0 +1,55 @@
+---
+// Facebook Feed Component
+// Uses Facebook Page Plugin to display recent posts
+---
+
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-900 mb-6">
+        עדכונים מהפייסבוק שלנו
+      </h2>
+      <p class="text-xl text-gray-700 max-w-2xl mx-auto">
+        הישארו מעודכנים עם הפרויקטים האחרונים, טיפים לבטיחות ועדכונים על ציוד חדש
+      </p>
+    </div>
+    
+    <!-- Facebook Page Plugin -->
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-gray-50 rounded-2xl p-8">
+        <div class="fb-page" 
+          data-href="https://www.facebook.com/people/%D7%94%D7%A9%D7%9B%D7%A8%D7%AA-%D7%A4%D7%99%D7%92%D7%95%D7%9E%D7%99%D7%9D/61579643023662/"
+          data-tabs="timeline"
+          data-width="500"
+          data-height="500"
+          data-small-header="false"
+          data-adapt-container-width="true"
+          data-hide-cover="false"
+          data-show-facepile="true">
+          <blockquote cite="https://www.facebook.com/people/%D7%94%D7%A9%D7%9B%D7%A8%D7%AA-%D7%A4%D7%99%D7%92%D7%95%D7%9E%D7%99%D7%9D/61579643023662/" class="fb-xfbml-parse-ignore">
+            <a href="https://www.facebook.com/people/%D7%94%D7%A9%D7%9B%D7%A8%D7%AA-%D7%A4%D7%99%D7%92%D7%95%D7%9E%D7%99%D7%9D/61579643023662/">השכרת פיגומים</a>
+          </blockquote>
+        </div>
+        
+        <!-- Fallback content if Facebook doesn't load -->
+        <div class="text-center mt-8">
+          <a 
+            href="https://www.facebook.com/people/%D7%94%D7%A9%D7%9B%D7%A8%D7%AA-%D7%A4%D7%99%D7%92%D7%95%D7%9E%D7%99%D7%9D/61579643023662/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+          >
+            <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            עקבו אחרינו בפייסבוק
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Facebook SDK -->
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/he_IL/sdk.js#xfbml=1&version=v18.0"></script>
