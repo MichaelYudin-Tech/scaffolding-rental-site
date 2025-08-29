@@ -19,12 +19,24 @@ try {
     homepage.testimonials = await sanityClient.fetch('*[_type == "testimonial"] | order(_createdAt desc)[0...6]');
   }
 } catch (error) {
+  console.log('Sanity fetch error:', error.message);
   console.log('Using fallback content (Sanity not connected yet)');
 }
 
-// Use fallback if no data returned from Sanity
-if (!homepage || !siteSettings) {
-  console.log('No data from Sanity, using fallback content');
+// Use fallback for missing data
+if (!homepage) {
+  console.log('⚠️ No homepage document found in Sanity - using fallback homepage content');
+}
+
+if (!siteSettings) {
+  console.log('⚠️ No siteSettings document found in Sanity - using fallback phone/whatsapp settings');
+  siteSettings = {
+    phone: "053-5227619",
+    whatsapp: "972535227619"
+  };
+}
+
+if (!homepage) {
   // Fallback content based on your friend's text
   homepage = {
     heroTitle: "הפיגום המושלם לפרויקט הבא שלכם כבר כאן!",

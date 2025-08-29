@@ -15,9 +15,20 @@ try {
   console.log('Using fallback content (Sanity not connected yet)');
 }
 
-// Use fallback if no data returned from Sanity
-if (!products || !siteSettings) {
-  console.log('No products data from Sanity, using fallback content');
+// Use fallback for missing data
+if (!products) {
+  console.log('⚠️ No product documents found in Sanity - using fallback product catalog');
+}
+
+if (!siteSettings) {
+  console.log('⚠️ No siteSettings document found in Sanity - using fallback phone/whatsapp settings');
+  siteSettings = {
+    phone: "053-5227619",
+    whatsapp: "972535227619"
+  };
+}
+
+if (!products) {
   
   products = [
     {
