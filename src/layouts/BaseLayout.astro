@@ -6,19 +6,68 @@ import '../styles/global.css';
 export interface Props {
   title: string;
   description?: string;
+  keywords?: string;
+  ogImage?: string;
+  canonicalURL?: string;
 }
 
-const { title, description = "השכרת פיגומים ניידים - פתרון בטוח ומקצועי לכל עבודה בגובה" } = Astro.props;
+const { 
+  title, 
+  description = "השכרת פיגומים ניידים - פתרון בטוח ומקצועי לכל עבודה בגובה. פיגומים איכותיים מאירופה עם תקן EN1004. שירות 24/6 לכל הארץ - בית שמש",
+  keywords = "פיגומים ניידים, השכרת פיגומים, פיגום אלומיניום, עבודה בגובה, קבלנים, גננים, בית שמש, תקן EN1004, פיגומים בטוחים",
+  ogImage = "https://pigumim.netlify.app/og-image.jpg",
+  canonicalURL = Astro.url.href
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- SEO Meta Tags -->
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="השכרת פיגומים ניידים" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:site_name" content="השכרת פיגומים ניידים" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Local Business / Geographic -->
+    <meta name="geo.region" content="IL-JM" />
+    <meta name="geo.placename" content="בית שמש" />
+    <meta name="geo.position" content="31.7539;34.9896" />
+    <meta name="ICBM" content="31.7539, 34.9896" />
+    
+    <!-- Business Information -->
+    <meta name="contact" content="+972-53-527-7619" />
+    <meta name="coverage" content="Israel" />
+    <meta name="distribution" content="local" />
+    <meta name="rating" content="general" />
     
     <!-- Additional head content -->
     <slot name="head" />
