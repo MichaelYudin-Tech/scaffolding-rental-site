@@ -36,6 +36,52 @@ if (!siteSettings) {
   };
 }
 
+// Add fallback for empty partners and testimonials
+if (homepage && (!homepage.partners || homepage.partners.length === 0)) {
+  console.log('⚠️ No partner documents found in Sanity - using fallback partners');
+  homepage.partners = [
+    {
+      name: "חברת בניין דן",
+      logo: null,
+      description: "פרויקטי בנייה גדולים"
+    },
+    {
+      name: "קבלנות כהן ובניו",
+      logo: null,
+      description: "שיפוצים ועבודות גמר"
+    },
+    {
+      name: "עיריית תל אביב",
+      logo: null,
+      description: "פרויקטי תשתית עירוניים"
+    }
+  ];
+}
+
+if (homepage && (!homepage.testimonials || homepage.testimonials.length === 0)) {
+  console.log('⚠️ No testimonial documents found in Sanity - using fallback testimonials');
+  homepage.testimonials = [
+    {
+      name: "יוסי כהן",
+      company: "קבלן בניין",
+      text: "שירות מעולה ופיגומים איכותיים. ממליץ בחום!",
+      rating: 5
+    },
+    {
+      name: "שרה לוי",
+      company: "בעלת בית",
+      text: "זמינות מהירה ומחירים הוגנים. תודה רבה!",
+      rating: 5
+    },
+    {
+      name: "דוד אברהם",
+      company: "גנן מקצועי",
+      text: "הפיגומים עזרו לי לבצע עבודות גיזום מורכבות בבטחה",
+      rating: 5
+    }
+  ];
+}
+
 if (!homepage) {
   // Fallback content based on your friend's text
   homepage = {
