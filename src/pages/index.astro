@@ -1,0 +1,334 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import { sanityClient } from '../lib/sanity';
+
+// Fetch content from Sanity (with fallback data)
+let homepage;
+let siteSettings;
+
+try {
+  // These queries will work once Sanity is set up
+  homepage = await sanityClient.fetch('*[_type == "homepage"][0]');
+  siteSettings = await sanityClient.fetch('*[_type == "siteSettings"][0]');
+  
+  // Additional queries for partners and testimonials
+  if (homepage) {
+    homepage.partners = await sanityClient.fetch('*[_type == "partner"] | order(order asc)');
+    homepage.testimonials = await sanityClient.fetch('*[_type == "testimonial"] | order(_createdAt desc)[0...6]');
+  }
+} catch (error) {
+  console.log('Using fallback content (Sanity not connected yet)');
+}
+
+// Use fallback if no data returned from Sanity
+if (!homepage || !siteSettings) {
+  console.log('No data from Sanity, using fallback content');
+  // Fallback content based on your friend's text
+  homepage = {
+    heroTitle: "הפיגום המושלם לפרויקט הבא שלכם כבר כאן!",
+    heroSubtitle: "השכרת פיגומים ניידים מציעים לכם פתרון נוח, בטוח ויעיל לכל עבודה בגובה.",
+    heroImage: null, // Will be populated from Sanity
+    whyUsTitle: "למה אנחנו?",
+    whyUsItems: [
+      {
+        title: "פיגומים ניידים לכל גובה",
+        description: "עבודה בטוחה ויציבה, לא משנה מה גובה הפרויקט שלכם"
+      },
+      {
+        title: "מחירים אטרקטיביים",
+        description: "כי איכות לא צריכה לבוא על חשבון הכיס"
+      },
+      {
+        title: "משלוח עד הבית",
+        description: "מגיעים לכל מקום בארץ, במהירות וביעילות"
+      },
+      {
+        title: "שירות אישי ומקצועי",
+        description: "אנחנו כאן כדי לעזור לכם לבחור את הפיגום המתאים ביותר לצרכים שלכם"
+      }
+    ],
+    targetAudienceTitle: "למי זה מתאים?",
+    targetAudience: [
+      {
+        title: "קבלנים ושיפוצניקים",
+        description: "לביצוע עבודות גמר, צביעה, איטום ועוד"
+      },
+      {
+        title: "גננים",
+        description: "לגיזום עצים ועבודות גינון בגובה"
+      },
+      {
+        title: "בעלי בתים פרטיים",
+        description: "לתיקונים קטנים, צביעת הקיר החיצוני או התקנת תאורה"
+      }
+    ],
+    partnersTitle: "חברות ומוסדות שעובדים איתנו",
+    partners: [
+      {
+        name: "חברת בניין דן",
+        logo: null,
+        description: "פרויקטי בנייה גדולים"
+      },
+      {
+        name: "קבלנות כהן ובניו",
+        logo: null,
+        description: "שיפוצים ועבודות גמר"
+      },
+      {
+        name: "עיריית תל אביב",
+        logo: null,
+        description: "פרויקטי תשתית עירוניים"
+      }
+    ],
+    testimonialsTitle: "מה אומרים עלינו",
+    testimonials: [
+      {
+        name: "יוסי כהן",
+        company: "קבלן בניין",
+        text: "שירות מעולה ופיגומים איכותיים. ממליץ בחום!",
+        rating: 5
+      },
+      {
+        name: "שרה לוי",
+        company: "בעלת בית",
+        text: "זמינות מהירה ומחירים הוגנים. תודה רבה!",
+        rating: 5
+      },
+      {
+        name: "דוד אברהם",
+        company: "גנן מקצועי",
+        text: "הפיגומים עזרו לי לבצע עבודות גיזום מורכבות בבטחה",
+        rating: 5
+      }
+    ]
+  };
+  
+  siteSettings = {
+    phone: "053-5227619",
+    whatsapp: "972535227619"
+  };
+}
+---
+
+<BaseLayout title="השכרת פיגומים ניידים - בטיחות קודמת לכול">
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 py-20">
+    <div class="container mx-auto px-4">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Content Side -->
+        <div class="text-center lg:text-right">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-gray-900">
+            {homepage.heroTitle}
+          </h1>
+          <p class="text-xl md:text-2xl mb-8 leading-relaxed text-gray-700">
+            {homepage.heroSubtitle}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Button 
+              href={`tel:+972${siteSettings.phone?.replace(/^0/, '').replace(/-/g, '')}`}
+              variant="secondary" 
+              size="lg"
+            >
+              📞 התקשר עכשיו להצעת מחיר
+            </Button>
+            <Button 
+              href={`https://wa.me/${siteSettings.whatsapp}?text=${encodeURIComponent('שלום, אני מעוניין לקבל מידע על השכרת פיגומים ניידים והצעת מחיר. אודה לפרטים נוספים.')}`}
+              variant="outline"
+              size="lg"
+            >
+              💬 WhatsApp
+            </Button>
+          </div>
+        </div>
+        
+        <!-- Image Side -->
+        <div class="relative">
+          {homepage.heroImage ? (
+            <img 
+              src={homepage.heroImage} 
+              alt="פיגומים ניידים" 
+              class="w-full h-96 object-cover rounded-2xl shadow-2xl"
+            />
+          ) : (
+            <div class="w-full h-96 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl shadow-2xl flex items-center justify-center">
+              <div class="text-center text-primary-700">
+                <svg class="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <p class="text-lg font-semibold">פיגומים מקצועיים</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">
+        {homepage.whyUsTitle}
+      </h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {homepage.whyUsItems.map((item: any) => (
+          <Card class="text-center bg-gray-50 hover:bg-white">
+            <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-8 h-8 text-primary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+              {item.title}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {item.description}
+            </p>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Target Audience Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">
+        {homepage.targetAudienceTitle}
+      </h2>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {homepage.targetAudience.map((audience: any) => (
+          <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow">
+            <h3 class="text-2xl font-semibold text-primary-900 mb-4">
+              {audience.title}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {audience.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section class="py-20 bg-gradient-to-r from-blue-50 to-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">
+        {homepage.partnersTitle}
+      </h2>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        {homepage.partners?.map((partner: any) => (
+          <div class="text-center p-6 bg-white rounded-xl hover:bg-blue-50 transition-colors shadow-sm hover:shadow-md border border-gray-100">
+            {partner.logo ? (
+              <img src={partner.logo} alt={partner.name} class="h-16 w-auto mx-auto mb-4" />
+            ) : (
+              <div class="h-16 w-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+            )}
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              {partner.name}
+            </h3>
+            <p class="text-gray-600">
+              {partner.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">
+        {homepage.testimonialsTitle}
+      </h2>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {homepage.testimonials?.map((testimonial: any) => (
+          <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div class="flex mb-4">
+              {Array.from({length: 5}).map((_, i) => (
+                <svg class={`w-5 h-5 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+              ))}
+            </div>
+            <blockquote class="text-gray-700 mb-4 leading-relaxed">
+              "{testimonial.text}"
+            </blockquote>
+            <footer class="text-sm">
+              <div class="font-semibold text-gray-900">{testimonial.name}</div>
+              <div class="text-gray-600">{testimonial.company}</div>
+            </footer>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-900 mb-6">
+          הפיגומים שלנו
+        </h2>
+        <p class="text-xl text-gray-700 max-w-2xl mx-auto mb-8">
+          פיגומים ניידים מקצועיים מהמותגים המובילים בעולם
+        </p>
+        <Button 
+          href="/services"
+          variant="outline"
+          size="lg"
+        >
+          צפה בכל המוצרים
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-br from-primary-50 via-white to-blue-50">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-8 text-gray-900">
+        התקשרו עכשיו לקבלת הצעת מחיר משתלמת במיוחד!
+      </h2>
+      <p class="text-xl mb-8 text-gray-700">
+        אל תתפשרו על פחות מהטוב ביותר, כי בטיחות קודמת לכול.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button 
+          href={`tel:+972${siteSettings.phone?.replace(/^0/, '').replace(/-/g, '')}`}
+          variant="primary"
+          size="lg"
+        >
+          📞 {siteSettings.phone}
+        </Button>
+        <Button 
+          href={`https://wa.me/${siteSettings.whatsapp}?text=${encodeURIComponent('שלום, אני מעוניין להצעת מחיר משתלמת במיוחד לפיגומים ניידים. אודה לפרטים נוספים.')}`}
+          variant="outline"
+          size="lg"
+        >
+          💬 WhatsApp
+        </Button>
+      </div>
+      
+      <p class="mt-8 text-lg">
+        <strong>דבר עם חיים להצעת מחיר משתלמת</strong>
+      </p>
+    </div>
+  </section>
+
+</BaseLayout>
