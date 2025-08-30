@@ -9,7 +9,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   output: 'static',
-  site: 'https://pigumim.netlify.app'
+  site: 'https://pigumim.netlify.app',
   build: {
     assets: 'assets',
     // Exclude instruction files from build
